@@ -108,4 +108,55 @@ public abstract class Room implements GetID, Table{
         System.out.printf("\n------\n");
         }
     }
+
+    /**
+    *Checks if the room is free for a given time slot.
+    *@param day the day ( e.g., "Monday" )
+    *@param start the start time ( e.g. , "09:00" )
+    *@param end the end time (e.g. , "10:00" )
+    *@return true if room is free, false if room is already booked
+    */
+    public boolean isAvailable(String day, String start, String end) {
+        ArrayList<String[]> timetable = getTable();
+
+        for (String[] row : timetable) {
+            String rowDay = row[0];
+            String rowStart = row[1];
+            String rowEnd = row[2];
+
+            if (rowDay.equalsIgnoreCase(day)) {
+                //Overlap exists if: start < existing_end AND end > existing_start
+                boolean overlaps = *start.compareTo(rowEnd) < 0 &&
+                    end.compareTo(rowStart) > 0;
+
+                if (overlaps) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+    *Attempts to book the room by adding a new timetable row.
+    *Prevents double booking.
+    *@param newRow the timetable entry to add:
+    *       [0] = Day, [1] = Start, [2] = End, [3] = Module, [4] = RoomID, ...
+    *@return true if booking suceeds, false otherwise
+    */
+    public boolean book(String[] newRow) {
+        String day = newRow[0];
+        String start = newRow[1];
+        String end = newRow[2];
+
+        if (!isAvailable(day, start, end)) {
+            System.out.println("ERROR: Room " + roomID + " is NOT available for the requested time.");
+            return false;
+        }
+
+        ArrayList<String[]> timetable = getTable();
+        timetable.add(newRow);
+        setTable(timetable);
+
+        return true;
 }
