@@ -1,10 +1,13 @@
 package one.group.models.repositories;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import one.group.models.enums.CSVTable;
 import one.group.models.user_timetable.CSVReader;
-/** Class to act as a repositoty for the information regarding the csv files used by the program. Uses static fields and methods. 
+import one.group.models.user_timetable.CSVWriter;
+
+/** Class to act as a repositoty for the information regarding the csv files used by the program. Uses static fields and methods.
  * Includes methods to store each csv file as an ArrayList on boot, get methods only return copies.
  */
 public class TablesRepo {
@@ -40,6 +43,25 @@ public class TablesRepo {
             throw new RuntimeException(e);
         }
     }
+
+    public static void addTimetableEntry(String[] newEntry){
+        ArrayList<String[]> currentTimetable = getTermsTable();
+
+        currentTimetable.add(newEntry);
+
+        termsTable=currentTimetable;
+        saveTimetableToCSV();
+    }
+    public static void removeTimeTableEntry(String module, String day, String timeRange, int term){
+        termsTable.removeIf(entry -> entry[2].equals(module)&&
+                entry[0].equals(day)&&entry[1].equals(timeRange)&&Integer.parseInt(entry[8])==term);
+        saveTimetableToCSV();
+    }
+
+    private static void saveTimetableToCSV(){
+        CSVWriter.writeArrayListToCSV(CSVTable.TERMS_TABLE.filePath, termsTable);
+    }
+
 
     /**
      * Method to return the admins table

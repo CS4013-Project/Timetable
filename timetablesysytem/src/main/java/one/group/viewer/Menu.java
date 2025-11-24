@@ -12,6 +12,7 @@ import one.group.models.repositories.TablesRepo;
 import one.group.models.rooms.Classroom;
 import one.group.models.rooms.Labroom;
 import one.group.models.rooms.Room;
+import one.group.models.term.Term;
 
 /** The class for the viewer segment of the programme. */
 public class Menu {
@@ -173,22 +174,71 @@ public class Menu {
             //Admin branch.
             }else if(admin instanceof Admin){
                 System.out.printf
-                ("\nPlease select option: \nS)et term\nL)og out\nQ)uit\n");
+                ("\nPlease select option: \nS)et term\nA)dd timetable entry\nR)emove timetable entry\nL)og out\nQ)uit\n");
 
                 String input = scanner.nextLine();
                 input = input.toUpperCase();
-                if(input.toUpperCase().equals("S")){
+                if(input.toUpperCase().equals("S")) {
 
                     System.out.printf("\nPlease enter the current term: \n");
 
                     input = scanner.nextLine();
                     input = input.toUpperCase();
-                    if(input.equals("1") || input.equals("2")){
+                    if (input.equals("1") || input.equals("2")) {
                         admin.setTerm(Integer.parseInt(input));
                         System.out.printf("\nTerm successfully set to %s\n", input);
-                    }else{
+                    } else {
                         System.out.printf("\nError: Invalid input\n");
                     }
+                }else if(input.toUpperCase().equals("A")) {
+                    //ADD TIMETABLE ENTRY
+                    System.out.println("\n=== Add Timetable Entry===");
+
+                    System.out.println("Enter day (e.g. MONDAY): ");
+                    String day = scanner.nextLine().toUpperCase();
+
+                    System.out.println("Enter time range (HH:MM-HH:MM): ");
+                    String timeRange = scanner.nextLine();
+
+                    System.out.println("Enter module code: ");
+                    String module = scanner.nextLine().toUpperCase();
+
+                    System.out.println("Enter class type (LECTURE/LAB/TUTORIAL)");
+                    String classType = scanner.nextLine().toUpperCase();
+
+                    System.out.println("Enter room number: ");
+                    String room = scanner.nextLine().toUpperCase();
+
+                    System.out.println("Enter lecturer ID: ");
+                    String lecturer = scanner.nextLine().toUpperCase();
+
+
+                    System.out.println("Enter course ID: ");
+                    String course = scanner.nextLine().toUpperCase();
+
+                    System.out.println("Enter year of study: ");
+                    int year = Integer.parseInt(scanner.nextLine());
+
+                    int term = Term.getTerm();
+
+                    admin.addTimetableEntry(module, timeRange, classType, room, lecturer, day, course, year, term);
+                    System.out.println("Timetable entry added successfully");
+                }else if(input.toUpperCase().equals("R")){
+                    //REMOVE TIMETABLE ENTRY
+                    System.out.println("\n=== Remove Timetable Entry ===");
+
+                    System.out.println("Enter module code: ");
+                    String module = scanner.nextLine().toUpperCase();
+
+                    System.out.println("Enter day (e.g, MON): ");
+                    String day = scanner.nextLine().toUpperCase();
+
+                    System.out.println("Enter time range (HH:MM-HH:MM): ");
+                    String timeRange = scanner.nextLine();
+
+                    admin.removeTimetableEntry(module,day,timeRange);
+                    System.out.println("Timetable entry removed successfully!");
+
                 }else if (input.toUpperCase().equals("L")){
                     break;
                 }else if(input.toUpperCase().equals("Q")){

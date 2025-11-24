@@ -1,5 +1,6 @@
 package one.group.models.people;
 
+import one.group.models.repositories.TablesRepo;
 import one.group.models.term.Term;
 
 /** A Class for admin users*/
@@ -25,4 +26,24 @@ public class Admin{
     public void setTerm(int n){
         Term.setTerm(n);
     }
+
+    public void addTimetableEntry(String module, String timeRange, String classType, String room, String lecturer, String day, String course, int year, int term){
+        String[] newEntry = {
+                day,
+                timeRange,
+                module,
+                classType,
+                room,
+                lecturer,
+                course,
+                String.valueOf(year),
+                String.valueOf(term)
+        };
+        TablesRepo.addTimetableEntry(newEntry);
+    }
+
+    public void removeTimetableEntry(String module, String day, String timeRange){
+        TablesRepo.removeTimeTableEntry(module, day, timeRange, Term.getTerm());
+    }
+
 }
