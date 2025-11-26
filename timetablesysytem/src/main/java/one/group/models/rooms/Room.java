@@ -30,6 +30,16 @@ public abstract class Room implements GetID, Table{
 
     }
 
+    public abstract String getRoomType();
+
+    public boolean isLabRoom(){
+        return "LAB".equals(getRoomType());
+    }
+
+    public boolean isClassroom(){
+        return "TEACHING".equals(getRoomType());
+    }
+
     /** 
      * Method to return the room capacity.
      * @return capacity the rooms capacity
@@ -126,7 +136,7 @@ public abstract class Room implements GetID, Table{
 
             if (rowDay.equalsIgnoreCase(day)) {
                 //Overlap exists if: start < existing_end AND end > existing_start
-                boolean overlaps = *start.compareTo(rowEnd) < 0 &&
+                boolean overlaps = start.compareTo(rowEnd) < 0 &&
                     end.compareTo(rowStart) > 0;
 
                 if (overlaps) {
@@ -159,4 +169,4 @@ public abstract class Room implements GetID, Table{
         setTable(timetable);
 
         return true;
-}
+}}

@@ -1,6 +1,7 @@
 package one.group.models.people;
 
 import one.group.models.repositories.TablesRepo;
+import one.group.models.services.RoomValidationService;
 import one.group.models.term.Term;
 
 /** A Class for admin users*/
@@ -27,7 +28,12 @@ public class Admin{
         Term.setTerm(n);
     }
 
-    public void addTimetableEntry(String module, String timeRange, String classType, String room, String lecturer, String day, String course, int year, int term){
+    public boolean addTimetableEntry(String module, String timeRange, String classType, String room, String lecturer, String day, String course, int year, int term){
+        if(!RoomValidationService.isValidRoomForEvent(room, classType)){
+            return false;
+        }
+
+
         String[] newEntry = {
                 day,
                 timeRange,
@@ -40,6 +46,7 @@ public class Admin{
                 String.valueOf(term)
         };
         TablesRepo.addTimetableEntry(newEntry);
+        return true;
     }
 
     public void removeTimetableEntry(String module, String day, String timeRange){

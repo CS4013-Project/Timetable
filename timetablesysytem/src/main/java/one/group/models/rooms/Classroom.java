@@ -11,4 +11,10 @@ public class Classroom extends Room {
     public Classroom(String id, int capacity, String building){
         super(id, capacity, building);
     }
+
+
+    @Override
+    public String getRoomType(){
+        return "TEACHING";
+    }
 }

@@ -11,4 +11,11 @@ public class Labroom extends Room {
     public Labroom(String id, int capacity, String building){
         super(id, capacity, building);
     }
+
+
+    @Override
+    public String getRoomType(){
+        return "LAB";
+    }
+
 }
