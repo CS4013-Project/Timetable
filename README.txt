@@ -29,8 +29,7 @@ Up until when our group member left, what we had completed is as follows:
 Current Status of Project:
 
 - Application is fully functional for viewing timetables for all supported entities
+- Can add/remove entries as admin
 
-To be Implemented:
-- Admin Ability to add/remove timetable entries
-- A room availablity check feature, which prevents double booking
-
+To be implemented:
+Student Groups to meet capacity of rooms
