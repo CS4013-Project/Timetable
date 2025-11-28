@@ -105,7 +105,7 @@ public abstract class Room implements GetID, Table{
         if(table.isEmpty()){
             queryTable();
         }
-        return table();
+        return table;
     }
 
     /**
@@ -140,7 +140,7 @@ public boolean isAvailable(String day, String start, String end) {
         int rowStart = toMinutes(row[1]);
         int rowEnd = toMinutes(row[2]);
 
-    if (rowDay.equalsIsIgnoreCase(day)) {
+    if (rowDay.equalsIgnoreCase(day)) {
         //Overlap: start < existing_end && end > existing_start
         boolean overlaps = newStart < rowEnd && newEnd > rowStart;
         if (overlaps) return false;
@@ -149,7 +149,7 @@ public boolean isAvailable(String day, String start, String end) {
     return true;
 }
 
-/**
+
 /*Attempts to book the room.
     */
 public boolean book(String[] newRow){
@@ -166,7 +166,7 @@ public boolean book(String[] newRow){
     getTable().add(newRow);
 
     //Persist to repository if needed
-    TablesRepo.addRow(newRow);
+    TablesRepo.addTimetableEntry(newRow);
 
     return true;
-}
+}}

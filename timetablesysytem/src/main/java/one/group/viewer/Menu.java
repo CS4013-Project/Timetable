@@ -1,5 +1,8 @@
 package one.group.viewer;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import one.group.models.people.Admin;
@@ -12,6 +15,7 @@ import one.group.models.repositories.TablesRepo;
 import one.group.models.rooms.Classroom;
 import one.group.models.rooms.Labroom;
 import one.group.models.rooms.Room;
+import one.group.models.services.GroupService;
 import one.group.models.term.Term;
 
 /** The class for the viewer segment of the programme. */
@@ -60,7 +64,7 @@ public class Menu {
                 input = input.toUpperCase();
                 for(String row[]:TablesRepo.getStudentsTable()){
                     if(row[0].equals(input.toUpperCase())){
-                        user = new Student(row[1], input, row[2], Integer.parseInt(row[3]));
+                        user = GroupService.createStudentFromCSV(row);
                         System.out.printf("\nStudent log in successful!\n");
                         go = false;
                     }
@@ -111,14 +115,17 @@ public class Menu {
             if(user instanceof Student || user instanceof Lecturer){
 
             System.out.printf
-            ("\nPlease select option: \nU)ser timetable\nR)oom timetable\nM)odule timetable\nC)ourse timetable\nL)ogout\nQ)uit\n");
+            ("\nPlease select option: \nU)ser timetable\nR)oom timetable\nM)odule timetable\nC)ourse timetable\nG)roup information\nL)ogout\nQ)uit\n");
 
                 String input = scanner.nextLine();
                 input = input.toUpperCase();
-                if(input.equals("U")){
+                if(input.equals("U")) {
                     System.out.println();
                     user.printTable(user.getTable());
                     System.out.println();
+                }else if(input.equals("G")) {
+                Student student = (Student) user;
+                displayStudentGroupInfo(student);
                 }else if(input.toUpperCase().equals("R")){
 
                     System.out.printf("\nPlease enter the room number: \n");
@@ -248,4 +255,31 @@ public class Menu {
         }
         return true;
     }
-}
+
+    private void displayStudentGroupInfo(Student student){
+        System.out.println("\n=== YOUR GROUP INFORMATION ===");
+        System.out.println("Student: "+ student.getName()+" ("+student.getID()+")");
+        System.out.println(student.getGroupInfo());
+
+        System.out.println("\n---Students in your Subgroup ---");
+        List<String> subGroupMembers = student.getSubgroupMembers();
+        if(subGroupMembers.isEmpty()){
+            System.out.println("No other students in your subgroup.");
+        } else {
+            for(String member : subGroupMembers){
+                System.out.println("• "+member);
+            }
+            System.out.println("Total in subgroup: " + (subGroupMembers.size() + 1)+ " students");
+        }
+
+        System.out.println("\n--- Your Group's Schedule ---");
+        ArrayList<String[]> groupTimetable = student.getGroupTimetable();
+        if(groupTimetable.isEmpty()){
+            System.out.println("No classes scheduled for your group this term");
+        } else{
+            for(String[] entry : groupTimetable){
+            System.out.println("• " + entry[0] + " " + entry[1] + " | " + entry[2] + " | " + entry[3] + " | " + entry[4]);
+        }
+    }
+        System.out.println("========================\n");
+}}

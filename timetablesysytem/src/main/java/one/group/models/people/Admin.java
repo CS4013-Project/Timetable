@@ -1,6 +1,7 @@
 package one.group.models.people;
 
 import one.group.models.repositories.TablesRepo;
+import one.group.models.services.GroupConflictService;
 import one.group.models.services.RoomValidationService;
 import one.group.models.term.Term;
 
@@ -30,6 +31,15 @@ public class Admin{
 
     public boolean addTimetableEntry(String module, String timeRange, String classType, String room, String lecturer, String day, String course, int year, int term){
         if(!RoomValidationService.isValidRoomForEvent(room, classType)){
+            return false;
+        }
+
+        if(!RoomValidationService.isValidRoomForEvent(room,classType)){
+            return false;
+        }
+
+        if(GroupConflictService.hasGroupConflict(course,year,day,timeRange.split("-")[0],timeRange.split("-")[1],term)){
+            System.out.println("Error: Student Group conflict detected");
             return false;
         }
 
