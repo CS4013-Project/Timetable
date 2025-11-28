@@ -5,8 +5,16 @@ import one.group.models.repositories.TablesRepo;
 
 import java.util.*;
 
+/**
+ * Class that handles organizing students into their respective groups
+ */
 public class GroupService {
-
+    /**
+     * Creates a student object from CSV row data
+     * Automatically handles header row detection and missing group data
+     * @param csvRow
+     * @return
+     */
     public static Student createStudentFromCSV(String[] csvRow){
         if(csvRow[0].equals("ID") || !isNumeric(csvRow[3])){
             return null;
@@ -22,7 +30,13 @@ public class GroupService {
 
         return new Student(name, id, course, year, groupId, subgroupId);
     }
-    
+
+    /**
+     * Checks if a string can be parsed as an integer
+     * Used for validating numeric fields in csv data
+     * @param str
+     * @return
+     */
     private static boolean isNumeric(String str){
         try{
             Integer.parseInt(str);
@@ -32,6 +46,10 @@ public class GroupService {
         }
     }
 
+    /**
+     * Organizes students into groups
+     * @return
+     */
     public static Map<String, StudentGroup> organizeStudentsIntoGroups(){
         Map<String, StudentGroup> groups = new HashMap<>();
 

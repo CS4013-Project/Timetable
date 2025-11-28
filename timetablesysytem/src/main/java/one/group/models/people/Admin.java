@@ -29,6 +29,19 @@ public class Admin{
         Term.setTerm(n);
     }
 
+    /**
+     * Method to add an entry to timetable
+     * @param module
+     * @param timeRange
+     * @param classType
+     * @param room
+     * @param lecturer
+     * @param day
+     * @param course
+     * @param year
+     * @param term
+     * @return
+     */
     public boolean addTimetableEntry(String module, String timeRange, String classType, String room, String lecturer, String day, String course, int year, int term){
         if(!RoomValidationService.isValidRoomForEvent(room, classType)){
             return false;
@@ -59,6 +72,12 @@ public class Admin{
         return true;
     }
 
+    /**
+     * Method to remove a timetable entry
+     * @param module
+     * @param day
+     * @param timeRange
+     */
     public void removeTimetableEntry(String module, String day, String timeRange){
         TablesRepo.removeTimeTableEntry(module, day, timeRange, Term.getTerm());
     }

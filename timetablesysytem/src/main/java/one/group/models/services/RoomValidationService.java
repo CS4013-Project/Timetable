@@ -1,8 +1,16 @@
 package one.group.models.services;
 import one.group.models.repositories.TablesRepo;
 
+/**
+ * Class to validate room is booked for right type of event
+ */
 public class RoomValidationService {
-
+    /**
+     * Checks if the room being used matches the event type
+     * @param roomId
+     * @param eventType
+     * @return
+     */
     public static boolean isValidRoomForEvent(String roomId, String eventType){
         String roomType = getRoomType(roomId);
 
@@ -30,6 +38,11 @@ public class RoomValidationService {
         return true;
     }
 
+    /**
+     * Gets the room type
+     * @param roomId
+     * @return
+     */
     private static String getRoomType(String roomId){
         for(String[] room: TablesRepo.getRoomsTable()){
             if(room[0].equals(roomId)){

@@ -1,7 +1,10 @@
 package one.group.models.events;
 
+/**
+ * This class is dedicated to events such as lectures,labs and tutorials
+ */
 public abstract class Event {
-    
+
     private String module;
     private String startTime;
     private String endTime;
@@ -9,6 +12,15 @@ public abstract class Event {
     private String room;
     private String day;
 
+    /**
+     * Constructor for event class
+     * @param module
+     * @param startTime
+     * @param endTime
+     * @param lecturer
+     * @param room
+     * @param day
+     */
     public Event(String module, String startTime, String endTime, String lecturer, String room, String day){
         this.module = module;
         this.startTime = startTime;

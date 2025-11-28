@@ -43,24 +43,44 @@ public class Student extends Person {
         return yearOfStudy;
     }
 
+    /**
+     * Gets id of group
+     * @return
+     */
     public String getGroupId() {
         return groupId;
     }
 
+    /**
+     * Gets id of subgroup
+     * @return
+     */
     public String getSubgroupId(){
         return subgroupId;
     }
 
+    /**
+     * Gets id of course
+     * @return
+     */
     public String getCourseID(){
         return courseID;
     }
 
+    /**
+     * Gets group info
+     * @return
+     */
     public String getGroupInfo(){
         return "Main Group: "+ groupId + "\n" +
                 "Subgroup: "+ subgroupId + "\n" +
                 "Course: " + courseID + "- Year " + yearOfStudy;
     }
 
+    /**
+     * Gets members of a subgroup
+     * @return
+     */
     public List<String> getSubgroupMembers(){
         List<String> members = new ArrayList<>();
         for(String[] row : TablesRepo.getStudentsTable()){
@@ -73,6 +93,10 @@ public class Student extends Person {
         return members;
     }
 
+    /**
+     * Gets the timetable for a group
+     * @return
+     */
     public ArrayList<String[]> getGroupTimetable(){
         ArrayList<String[]> groupTimetable = new ArrayList<>();
         ArrayList<String[]> allTimetable = TablesRepo.getTermsTable();

@@ -25,6 +25,15 @@ public class Module implements GetID, Table {
     /**The timetable for the module. */
     private ArrayList<String[]> table;
 
+    /**
+     * Constructor for module class
+     * @param id
+     * @param lecturer
+     * @param programmeStructure
+     * @param lectureHours
+     * @param labHours
+     * @param tutorialHours
+     */
     public Module(String id, String lecturer, String programmeStructure, String lectureHours, String labHours, String tutorialHours){
         this.id = id;
         this.lecturer = lecturer;
@@ -34,11 +43,19 @@ public class Module implements GetID, Table {
         this.tutorialHours = tutorialHours;
     }
 
+    /**
+     * Gets id of module
+     * @return
+     */
     @Override
     public String getID(){
         return id;
     }
 
+    /**
+     * Gets lecturer of module
+     * @return
+     */
     public String getLecturer(){
         return lecturer;
     }

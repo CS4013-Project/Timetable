@@ -19,5 +19,9 @@ public interface Table {
     /** Method to print a table. */
     public void printTable(ArrayList<String[]> tableToPrint);
 
+    /**
+     * Method to access a table.
+     * @return
+     */
     public ArrayList<String[]> accessTable();
 }

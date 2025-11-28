@@ -44,6 +44,10 @@ public class TablesRepo {
         }
     }
 
+    /**
+     * Adds a timetable entry
+     * @param newEntry
+     */
     public static void addTimetableEntry(String[] newEntry){
         ArrayList<String[]> currentTimetable = getTermsTable();
 
@@ -52,12 +56,23 @@ public class TablesRepo {
         termsTable=currentTimetable;
         saveTimetableToCSV();
     }
+
+    /**
+     * Removes a timetable entry
+     * @param module
+     * @param day
+     * @param timeRange
+     * @param term
+     */
     public static void removeTimeTableEntry(String module, String day, String timeRange, int term){
         termsTable.removeIf(entry -> entry[2].equals(module)&&
                 entry[0].equals(day)&&entry[1].equals(timeRange)&&Integer.parseInt(entry[8])==term);
         saveTimetableToCSV();
     }
 
+    /**
+     * Writes changes of timetable to the CSV file
+     */
     private static void saveTimetableToCSV(){
         CSVWriter.writeArrayListToCSV(CSVTable.TERMS_TABLE.filePath, termsTable);
     }
