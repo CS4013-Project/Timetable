@@ -31,5 +31,3 @@ Current Status of Project:
 - Application is fully functional for viewing timetables for all supported entities
 - Can add/remove entries as admin
 
-To be implemented:
-Student Groups to meet capacity of rooms
