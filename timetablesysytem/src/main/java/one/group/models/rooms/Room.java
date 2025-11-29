@@ -27,6 +27,7 @@ public abstract class Room implements GetID, Table{
         this.roomID = id;
         this.capacity = capacity;
         this.building = buidling;
+        this.table = new ArrayList<>();
 
     }
 
