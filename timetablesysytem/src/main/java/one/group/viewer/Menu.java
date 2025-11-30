@@ -62,12 +62,19 @@ public class Menu {
 
                 input = scanner.nextLine();
                 input = input.toUpperCase();
+
+                boolean studentFound = false;
                 for(String row[]:TablesRepo.getStudentsTable()){
                     if(row[0].equals(input.toUpperCase())){
                         user = GroupService.createStudentFromCSV(row);
                         System.out.printf("\nStudent log in successful!\n");
+                        studentFound = true;
                         go = false;
+
                     }
+                }
+                if(!studentFound){
+                    System.out.println("Error: Student ID '" + input + "' not found. Please try again.\n");
                 }
             }else if(input.toUpperCase().equals("T")){
 
@@ -75,33 +82,52 @@ public class Menu {
 
                 input = scanner.nextLine();
                 input = input.toUpperCase();
+
+                boolean lecturerFound = false;
                 for(String row[]:TablesRepo.getLecturersTable()){
                     if(row[0].equals(input.toUpperCase())){
                         user = new Lecturer(row[1], input , row[2]);
                         System.out.printf("\nLecturer log in successful!\n");
+                        lecturerFound = true;
                         go = false;
+
                     }
+                }
+                if(!lecturerFound){
+                    System.out.println("Error: Lecturer ID '"+input+"' not found. Please try again.\n");
                 }
             }else if(input.toUpperCase().equals("A")){
 
                 System.out.printf("\nPlease enter your ID: \n");
 
                 input = scanner.nextLine();
-                input = input.toUpperCase();
+                String adminId = input.toUpperCase();
+
+                boolean adminFound = false;
+                boolean passwordCorrect =false;
                 for(String row[]:TablesRepo.getAdminTable()){
-                    if(row[0].equals(input)){
+                    if(row[0].equals(adminId)){
 
                         System.out.printf("\nPlease enter your password: \n");
 
                         input = scanner.nextLine();
                         if(input.equals(row[2])){
-                        admin = new Admin(input, row[1], row[2]);
+                        admin = new Admin(adminId, row[1], row[2]);
                         adminStatus = true;
                         System.out.printf("\nAdmin log in successful! \n");
+                        passwordCorrect = true;
+                        adminFound = true;
                         go = false;
+                        } else {
+                            System.out.println("Error: Invalid password. Please try again.\n");
                         }
+
                     }
-                }            
+                }
+                if(!adminFound){
+                    System.out.println("Error: Admin ID '"+adminId+"' not found. Please try again.\n");
+                }
+
             }else if(input.toUpperCase().equals("Q")){
                 return false;
             }
@@ -114,16 +140,19 @@ public class Menu {
             //User branch.
             if(user instanceof Student || user instanceof Lecturer){
 
-            System.out.printf
-            ("\nPlease select option: \nU)ser timetable\nR)oom timetable\nM)odule timetable\nC)ourse timetable\nG)roup information\nL)ogout\nQ)uit\n");
-
+            if(user instanceof Student) {
+                System.out.printf
+                        ("\nPlease select option: \nU)ser timetable\nR)oom timetable\nM)odule timetable\nC)ourse timetable\nG)roup information\nL)ogout\nQ)uit\n");
+            }else {
+                System.out.printf("\nPlease select option: \nU)ser timetable\nR)oom timetable\nM)odule timetable\nC)ourse timetable\nL)ogout\nQ)uit\n");
+            }
                 String input = scanner.nextLine();
                 input = input.toUpperCase();
                 if(input.equals("U")) {
                     System.out.println();
                     user.printTable(user.getTable());
                     System.out.println();
-                }else if(input.equals("G")) {
+                }else if(input.equals("G") && user instanceof Student) {
                 Student student = (Student) user;
                 displayStudentGroupInfo(student);
                 }else if(input.toUpperCase().equals("R")){
@@ -132,28 +161,45 @@ public class Menu {
 
                     input = scanner.nextLine();
                     input = input.toUpperCase();
+
+                    room =null;
                     for(String[] row: TablesRepo.getRoomsTable()){
                         if(row[0].equals(input)){
                             if(row[1].equals("TEACHING")){
                                 room = new Classroom(input, Integer.parseInt(row[2]), row[3]);
                             }else{
                                 room = new Labroom(input, Integer.parseInt(row[2]), row[3]);
-                            } 
+                            }
+                            break;
                         }
+                    }
+                    if(room==null){
+                        System.out.println("Error: Room '"+input+"' not found. Please try again. \n");
+                        continue;
                     }
                     System.out.println();
                     room.printTable(room.getTable());
                     System.out.println();
+
                 }else if (input.equals("M")){
 
                     System.out.printf("\nPlease enter the module ID: \n");
 
                     input = scanner.nextLine();
                     input = input.toUpperCase();
+
+                    module = null;
                     for(String[] row: TablesRepo.getModulesTable()){
                         if(row[0].equals(input)){
                             module = new Module(row[0], row[1], row[2], row[3], row[4], row[5]);
+
+                            break;
                         }
+                    }
+
+                    if(module==null) {
+                        System.out.println("Error: Module'" + input+"' not found. Please try again. \n");
+                        continue;
                     }
                     System.out.println();
                     module.printTable(module.getTable());
@@ -164,10 +210,18 @@ public class Menu {
 
                     input = scanner.nextLine();
                     input = input.toUpperCase();
+
+                    course = null;
                     for(String[] row: TablesRepo.getCoursesTable()){
                         if(row[0].equals(input)){
                             course = new ProgramStructure(row[0], Integer.parseInt(row[1]), Integer.parseInt(row[2]), row[3]);
+                            break;
                         }
+                    }
+
+                    if(course==null){
+                        System.out.println("Error: Course '"+input+"' not found. Please try again.\n");
+                        continue;
                     }
                     System.out.println();
                     course.printTable(course.getTable());
@@ -227,9 +281,11 @@ public class Menu {
                     int year = Integer.parseInt(scanner.nextLine());
 
                     int term = Term.getTerm();
+                    boolean success = admin.addTimetableEntry(module, timeRange, classType, room, lecturer, day, course, year, term);
+                    if(success){
+                        System.out.println("Timetable entry added successfully");
+                    }
 
-                    admin.addTimetableEntry(module, timeRange, classType, room, lecturer, day, course, year, term);
-                    System.out.println("Timetable entry added successfully");
                 }else if(input.toUpperCase().equals("R")){
                     //REMOVE TIMETABLE ENTRY
                     System.out.println("\n=== Remove Timetable Entry ===");

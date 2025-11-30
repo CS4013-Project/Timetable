@@ -43,13 +43,11 @@ public class Admin{
      * @return
      */
     public boolean addTimetableEntry(String module, String timeRange, String classType, String room, String lecturer, String day, String course, int year, int term){
+        // CHECKS ROOM TYPE VALIDATION
         if(!RoomValidationService.isValidRoomForEvent(room, classType)){
             return false;
         }
 
-        if(!RoomValidationService.isValidRoomForEvent(room,classType)){
-            return false;
-        }
 
         if(GroupConflictService.hasGroupConflict(course,year,day,timeRange.split("-")[0],timeRange.split("-")[1],term)){
             System.out.println("Error: Student Group conflict detected");
@@ -74,9 +72,11 @@ public class Admin{
 
     /**
      * Method to remove a timetable entry
+     *
      * @param module
      * @param day
      * @param timeRange
+     * @return
      */
     public void removeTimetableEntry(String module, String day, String timeRange){
         TablesRepo.removeTimeTableEntry(module, day, timeRange, Term.getTerm());
